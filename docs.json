@@ -70,6 +70,9 @@
           },
           "400": {
             "description": "Veiculo formatado incorretamente"
+          },
+          "403": {
+            "description": "Token expirado"
           }
         }
       }
@@ -79,7 +82,7 @@
         "tags": [
           "vehicles"
         ],
-        "summary": "Retorna todos os veiculos",
+        "summary": "Retorna todos os veiculos deste usuário",
         "operationId": "findAllVehicles",
         "produces": [
           "application/json"
@@ -89,14 +92,7 @@
             "name": "Authorization",
             "in": "header",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "reference",
-            "in": "query",
-            "description": "referencia do veiculo",
-            "required": true,
-            "type": "integer",
+            "type": "string",
             "items": {
               "type": "string"
             }
@@ -149,44 +145,6 @@
             "schema": {
               "$ref": "#/definitions/Vehicle"
             }
-          },
-          "404": {
-            "description": "Veiculo nao encontrado"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "vehicles"
-        ],
-        "summary": "Substituir todas as informações de um veículo",
-        "operationId": "updateVehicle",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Veículo que será substituido",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Vehicle"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Referencia invalida"
           },
           "404": {
             "description": "Veiculo nao encontrado"
@@ -260,10 +218,51 @@
         ],
         "responses": {
           "201": {
-            "description": "Criado com sucesso"
+            "description": "Atualizado com sucesso"
           },
           "400": {
             "description": "Veiculo formatado incorretamente"
+          }
+        }
+      }
+    },
+    "/vehicles/status/": {
+      "get": {
+        "tags": [
+          "vehicles"
+        ],
+        "summary": "Ativa ou desativa um ou mais veículo(s)",
+        "operationId": "updateStatus",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "reference",
+            "in": "query",
+            "description": "referencia do veiculo",
+            "required": true,
+            "type": "integer",
+            "items": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "schema": {
+              "$ref": "#/definitions/UpdateStatus"
+            }
+          },
+          "403": {
+            "description": "Limite de anúncios ultrapassado"
           }
         }
       }
@@ -273,7 +272,7 @@
         "tags": [
           "user"
         ],
-        "summary": "Logs user into the system",
+        "summary": "Recebe um JWT para acessar outras rotas",
         "operationId": "loginUser",
         "produces": [
           "application/json",
@@ -281,261 +280,246 @@
         ],
         "parameters": [
           {
-            "name": "username",
-            "in": "query",
+            "name": "token",
+            "in": "header",
             "description": "The user name for login",
             "required": true,
             "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "token JWT contendo metadados da conta do usuário",
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+            }
           },
+          "400": {
+            "description": "Token inválido"
+          },
+          "401": {
+            "description": "Conta desativada"
+          }
+        }
+      }
+    },
+    "/brand:reference": {
+      "options": {
+        "tags": [
+          "vehicles"
+        ],
+        "summary": "codigos das marcas",
+        "description": "lista as enumerações possíveis",
+        "operationId": "optionBrand",
+        "parameters": [
           {
-            "name": "password",
+            "name": "reference",
             "in": "query",
-            "description": "The password for login in clear text",
-            "required": true,
+            "description": "Caso não informe uma marca, todas as marcas ativas e seus códigos serão listadas.",
+            "required": false,
             "type": "string"
           }
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
-            "headers": {
-              "X-Rate-Limit": {
-                "type": "integer",
-                "format": "int32",
-                "description": "calls per hour allowed by the user"
-              },
-              "X-Expires-After": {
-                "type": "string",
-                "format": "date-time",
-                "description": "date in UTC when token expires"
-              }
-            },
+            "description": "Marca (ou vetor de marcas), com código e nome",
             "schema": {
-              "type": "string"
+              "$ref": "#/definitions/Brands"
             }
-          },
-          "400": {
-            "description": "Invalid username/password supplied"
           }
         }
       }
     },
-    "/user/logout": {
-      "get": {
+    "/model:reference": {
+      "options": {
         "tags": [
-          "user"
+          "vehicles"
         ],
-        "summary": "Logs out current logged in user session",
-        "operationId": "logoutUser",
-        "produces": [
-          "application/json",
-          "application/xml"
-        ],
-        "parameters": [],
-        "responses": {
-          "default": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/user/{username}": {
-      "get": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Get user by user name",
-        "operationId": "getUserByName",
-        "produces": [
-          "application/json",
-          "application/xml"
-        ],
+        "summary": "codigos dos modelos",
+        "description": "lista as enumerações possíveis",
+        "operationId": "optionModel",
         "parameters": [
           {
-            "name": "username",
-            "in": "path",
-            "description": "The name that needs to be fetched. Use user1 for testing.",
-            "required": true,
+            "name": "reference",
+            "in": "query",
+            "description": "Caso não informe um modelo, todos as modelos ativos da marca, com suas versões e seus códigos, serão listados.",
+            "required": false,
             "type": "string"
           }
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "Modelo (ou vetor de modelos), com código e nome",
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/Models"
             }
-          },
-          "400": {
-            "description": "Invalid username supplied"
-          },
-          "404": {
-            "description": "User not found"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Updated user",
-        "description": "This can only be done by the logged in user.",
-        "operationId": "updateUser",
-        "produces": [
-          "application/json",
-          "application/xml"
-        ],
-        "parameters": [
-          {
-            "name": "username",
-            "in": "path",
-            "description": "name that need to be updated",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Updated user object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid user supplied"
-          },
-          "404": {
-            "description": "User not found"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Delete user",
-        "description": "This can only be done by the logged in user.",
-        "operationId": "deleteUser",
-        "produces": [
-          "application/json",
-          "application/xml"
-        ],
-        "parameters": [
-          {
-            "name": "username",
-            "in": "path",
-            "description": "The name that needs to be deleted",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid username supplied"
-          },
-          "404": {
-            "description": "User not found"
           }
         }
       }
     }
   },
   "definitions": {
-    "User": {
+    "UpdateStatus": {
+      "type": "object",
+      "properties": {
+        "activate": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "example": "1051, 5671, 178913, 1412, AB56G12"
+          }
+        },
+        "deactivate": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "example": "6511, 1327, TB66UK58, 177901, 81328"
+          }
+        }
+      }
+    },
+    "Brands": {
       "type": "object",
       "properties": {
         "id": {
           "type": "integer",
-          "format": "int64"
+          "example": 10
         },
-        "username": {
-          "type": "string"
+        "name": {
+          "type": "string",
+          "example": "Toyota"
         },
-        "firstName": {
-          "type": "string"
-        },
-        "lastName": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
-        },
-        "phone": {
-          "type": "string"
-        },
-        "userStatus": {
-          "type": "integer",
-          "format": "int32",
-          "description": "User Status"
+        "models": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Models"
+          }
         }
-      },
-      "xml": {
-        "name": "User"
+      }
+    },
+    "Models": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 44
+        },
+        "name": {
+          "type": "string",
+          "example": "Corolla"
+        },
+        "versions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Versions"
+          }
+        }
+      }
+    },
+    "Versions": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 58
+        },
+        "name": {
+          "type": "string",
+          "example": "XEI"
+        }
       }
     },
     "Vehicle": {
       "type": "object",
       "properties": {
         "reference": {
-          "type": "integer",
-          "format": "int64"
+          "type": "string",
+          "example": "122356",
+          "description": "referencia única do veiculo do lado do usuario"
         },
         "type": {
-          "type": "integer",
-          "example": 4
+          "type": "string",
+          "example": "C",
+          "description": "C para Carro, M para moto."
         },
         "licensePlate": {
           "type": "string",
-          "example": "AA1A11"
+          "example": "AA1A11",
+          "description": "placa"
         },
         "document": {
           "type": "integer",
-          "example": 1728
+          "example": 1728,
+          "description": "documento"
         },
         "mileage": {
           "type": "integer",
-          "example": 35605
+          "example": 35605,
+          "description": "quilometragem"
         },
         "doors": {
           "type": "integer",
-          "example": 4
+          "example": 4,
+          "description": "numero de portas"
         },
         "year": {
           "type": "integer",
-          "example": 2020
+          "example": 2020,
+          "description": "ano do veiculo"
         },
         "color": {
-          "type": "integer"
-        },
-        "fuel": {
-          "type": "integer"
-        },
-        "gearbox": {
-          "type": "integer"
-        },
-        "description": {
-          "type": "string"
-        },
-        "featured": {
-          "type": "boolean"
-        },
-        "model": {
-          "$ref": "#/definitions/Model"
+          "type": "integer",
+          "description": "consultar OPTIONS para ver o código de todas as cores"
         },
         "version": {
-          "type": "integer"
+          "type": "integer",
+          "description": "consultar OPTIONS para ver o código de todas as versoes"
         },
-        "adDetails": {
-          "$ref": "#/definitions/VehicleAd"
+        "model": {
+          "type": "integer",
+          "description": "consultar OPTIONS para ver o código de todos os modelos"
         },
-        "fipe": {
-          "type": "integer"
+        "brand": {
+          "type": "integer",
+          "description": "consultar OPTIONS para ver o código de todos as marcas"
+        },
+        "model_year": {
+          "type": "integer",
+          "example": 2020,
+          "description": "o ano do modelo ao qual o veiculo pertence"
+        },
+        "gearbox": {
+          "type": "integer",
+          "description": "consultar OPTIONS para ver o código das possiveis embreagens"
+        },
+        "fuel": {
+          "type": "integer",
+          "description": "consultar OPTIONS para ver o código dos possiveis combustíveis"
+        },
+        "price": {
+          "type": "number",
+          "example": 49607.54,
+          "description": "valor total do veiculo"
+        },
+        "ammountOfInstallment": {
+          "type": "integer",
+          "example": 10,
+          "description": "numero de parcelas"
+        },
+        "ammountPerInstallment": {
+          "type": "number",
+          "example": 5000,
+          "description": "valor de cada parcela"
+        },
+        "description": {
+          "type": "string",
+          "example": "Veiculo em bom estado, precisa de reparos na porta direita traseira. Apenas um dono",
+          "description": "descrição do anúncio"
+        },
+        "featured": {
+          "type": "integer",
+          "description": "1 se for destaque, 0 se não"
         },
         "pictures": {
           "type": "array",
@@ -543,8 +527,13 @@
             "$ref": "#/definitions/Pictures"
           }
         },
-        "video": {
-          "type": "string"
+        "accessories": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "example": "10, 15, 18, 22",
+            "description": "consultar OPTIONS para ver o código dos possiveis acessórios"
+          }
         },
         "features": {
           "type": "array",
@@ -561,72 +550,17 @@
         "$ref": "#/definitions/Vehicle"
       }
     },
-    "Installments": {
-      "type": "object",
-      "properties": {
-        "amountOfInstallments": {
-          "type": "integer"
-        },
-        "amountPerInstallment": {
-          "type": "number",
-          "format": "float"
-        }
-      }
-    },
-    "Model": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer"
-        },
-        "name": {
-          "type": "string"
-        },
-        "year": {
-          "type": "integer",
-          "example": 2008
-        }
-      }
-    },
-    "VehicleAd": {
-      "type": "object",
-      "properties": {
-        "price": {
-          "type": "number",
-          "format": "float64",
-          "example": "49015,67"
-        },
-        "exchangeable": {
-          "type": "boolean"
-        },
-        "installments": {
-          "$ref": "#/definitions/Installments"
-        },
-        "deposit": {
-          "type": "integer"
-        }
-      }
-    },
     "Pictures": {
       "type": "object",
       "properties": {
-        "url": {
-          "type": "string"
-        }
-      }
-    },
-    "ApiResponse": {
-      "type": "object",
-      "properties": {
-        "code": {
+        "photo": {
+          "type": "string",
+          "example": "https://url.onde.imagem/esta/hospedada.jpg",
+          "description": "url onde o servidor irá buscar a imagem para ser salva"
+        },
+        "order": {
           "type": "integer",
-          "format": "int32"
-        },
-        "type": {
-          "type": "string"
-        },
-        "message": {
-          "type": "string"
+          "description": "ordem de aparecimento das imagens, sendo a menor a imagem de thumbnail"
         }
       }
     }
