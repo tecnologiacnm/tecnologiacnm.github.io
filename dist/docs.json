@@ -1,0 +1,638 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "API para publicar veículos no portal Chaves na Mão\n",
+    "version": "1.0.0",
+    "title": "API Veículos Chaves na Mão",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "ti@chavesnamao.com.br"
+    }
+  },
+  "host": "virtserver.swaggerhub.com",
+  "basePath": "/chavesnamao/integracao_veiculos_cnm/1.0.0",
+  "tags": [
+    {
+      "name": "vehicles",
+      "description": "criar, atualizar, ler e remover veiculos",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
+    },
+    {
+      "name": "user",
+      "description": "entrar e autenticar",
+      "externalDocs": {
+        "description": "Find out more about our store",
+        "url": "http://swagger.io"
+      }
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/vehicles": {
+      "post": {
+        "tags": [
+          "vehicles"
+        ],
+        "summary": "Adicionar veiculos",
+        "operationId": "addVehicles",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "Veiculos",
+            "description": "Vetor de veiculos",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/VehicleArray"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Criado com sucesso"
+          },
+          "400": {
+            "description": "Veiculo formatado incorretamente"
+          }
+        }
+      }
+    },
+    "/vehicles/all": {
+      "get": {
+        "tags": [
+          "vehicles"
+        ],
+        "summary": "Retorna todos os veiculos",
+        "operationId": "findAllVehicles",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "reference",
+            "in": "query",
+            "description": "referencia do veiculo",
+            "required": true,
+            "type": "integer",
+            "items": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "schema": {
+              "$ref": "#/definitions/VehicleArray"
+            }
+          },
+          "404": {
+            "description": "Veiculo nao encontrado"
+          }
+        }
+      }
+    },
+    "/vehicles/:reference": {
+      "get": {
+        "tags": [
+          "vehicles"
+        ],
+        "summary": "Encontrar um veículo por referencia",
+        "operationId": "findOneVehicleByRef",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "reference",
+            "in": "query",
+            "description": "referencia do veiculo",
+            "required": true,
+            "type": "integer",
+            "items": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "schema": {
+              "$ref": "#/definitions/Vehicle"
+            }
+          },
+          "404": {
+            "description": "Veiculo nao encontrado"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "vehicles"
+        ],
+        "summary": "Substituir todas as informações de um veículo",
+        "operationId": "updateVehicle",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Veículo que será substituido",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Vehicle"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Referencia invalida"
+          },
+          "404": {
+            "description": "Veiculo nao encontrado"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "vehicles"
+        ],
+        "summary": "Apaga um veículo por referencia",
+        "operationId": "deleteVehicleByRef",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "reference",
+            "in": "query",
+            "description": "referencia do veiculo",
+            "required": true,
+            "type": "integer",
+            "items": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso"
+          },
+          "404": {
+            "description": "Veiculo nao encontrado"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "vehicles"
+        ],
+        "summary": "Corrige campos informados de um veiculo",
+        "operationId": "patchVehicle",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "Veiculo",
+            "description": "Vetor de veiculos",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Vehicle"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Criado com sucesso"
+          },
+          "400": {
+            "description": "Veiculo formatado incorretamente"
+          }
+        }
+      }
+    },
+    "/auth": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Logs user into the system",
+        "operationId": "loginUser",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The user name for login",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password for login in clear text",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "headers": {
+              "X-Rate-Limit": {
+                "type": "integer",
+                "format": "int32",
+                "description": "calls per hour allowed by the user"
+              },
+              "X-Expires-After": {
+                "type": "string",
+                "format": "date-time",
+                "description": "date in UTC when token expires"
+              }
+            },
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Invalid username/password supplied"
+          }
+        }
+      }
+    },
+    "/user/logout": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Logs out current logged in user session",
+        "operationId": "logoutUser",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/user/{username}": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Get user by user name",
+        "operationId": "getUserByName",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The name that needs to be fetched. Use user1 for testing.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Invalid username supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Updated user",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "updateUser",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "name that need to be updated",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid user supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Delete user",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "deleteUser",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The name that needs to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid username supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "username": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "userStatus": {
+          "type": "integer",
+          "format": "int32",
+          "description": "User Status"
+        }
+      },
+      "xml": {
+        "name": "User"
+      }
+    },
+    "Vehicle": {
+      "type": "object",
+      "properties": {
+        "reference": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "type": {
+          "type": "integer",
+          "example": 4
+        },
+        "licensePlate": {
+          "type": "string",
+          "example": "AA1A11"
+        },
+        "document": {
+          "type": "integer",
+          "example": 1728
+        },
+        "mileage": {
+          "type": "integer",
+          "example": 35605
+        },
+        "doors": {
+          "type": "integer",
+          "example": 4
+        },
+        "year": {
+          "type": "integer",
+          "example": 2020
+        },
+        "color": {
+          "type": "integer"
+        },
+        "fuel": {
+          "type": "integer"
+        },
+        "gearbox": {
+          "type": "integer"
+        },
+        "description": {
+          "type": "string"
+        },
+        "featured": {
+          "type": "boolean"
+        },
+        "model": {
+          "$ref": "#/definitions/Model"
+        },
+        "version": {
+          "type": "integer"
+        },
+        "adDetails": {
+          "$ref": "#/definitions/VehicleAd"
+        },
+        "fipe": {
+          "type": "integer"
+        },
+        "pictures": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Pictures"
+          }
+        },
+        "video": {
+          "type": "string"
+        },
+        "features": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "example": "1, 2, 7, 16, 22"
+          }
+        }
+      }
+    },
+    "VehicleArray": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Vehicle"
+      }
+    },
+    "Installments": {
+      "type": "object",
+      "properties": {
+        "amountOfInstallments": {
+          "type": "integer"
+        },
+        "amountPerInstallment": {
+          "type": "number",
+          "format": "float"
+        }
+      }
+    },
+    "Model": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "year": {
+          "type": "integer",
+          "example": 2008
+        }
+      }
+    },
+    "VehicleAd": {
+      "type": "object",
+      "properties": {
+        "price": {
+          "type": "number",
+          "format": "float64",
+          "example": "49015,67"
+        },
+        "exchangeable": {
+          "type": "boolean"
+        },
+        "installments": {
+          "$ref": "#/definitions/Installments"
+        },
+        "deposit": {
+          "type": "integer"
+        }
+      }
+    },
+    "Pictures": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "ApiResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}
