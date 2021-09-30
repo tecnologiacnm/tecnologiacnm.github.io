@@ -9,8 +9,8 @@
       "email": "ti@chavesnamao.com.br"
     }
   },
-  "host": "virtserver.swaggerhub.com",
-  "basePath": "/chavesnamao/integracao_veiculos_cnm/1.0.0",
+  "host": "beta.chavesnamao.com.br",
+  "basePath": "/chavesnamao/",
   "tags": [
     {
       "name": "vehicles",
