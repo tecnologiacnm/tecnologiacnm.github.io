@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "description": "API para publicar veículos no portal Chaves na Mão\n",
-    "version": "1.0.0",
+    "version": "0.1.1",
     "title": "API Veículos Chaves na Mão",
     "termsOfService": "http://swagger.io/terms/",
     "contact": {
@@ -77,6 +77,48 @@
         }
       }
     },
+    "/new/fipe": {
+      "post": {
+        "tags": [
+          "vehicles"
+        ],
+        "summary": "Adicionar veiculos com código FIPE",
+        "operationId": "addVehiclesFipe",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "Veiculos",
+            "description": "Vetor de veiculos com código FIPE",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/VehicleFipeArray"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Criado com sucesso"
+          },
+          "400": {
+            "description": "Veiculo formatado incorretamente"
+          },
+          "403": {
+            "description": "Token expirado"
+          }
+        }
+      },
     "/all": {
       "get": {
         "tags": [
@@ -544,10 +586,119 @@
         }
       }
     },
+    "VehicleFipe": {
+      "type": "object",
+      "properties": {
+        "reference": {
+          "type": "string",
+          "example": "122356",
+          "description": "referencia única do veiculo do lado do usuario"
+        },
+        "type": {
+          "type": "string",
+          "example": "C",
+          "description": "C para Carro, M para moto."
+        },
+        "licensePlate": {
+          "type": "string",
+          "example": "AA1A11",
+          "description": "placa"
+        },
+        "document": {
+          "type": "integer",
+          "example": 1728,
+          "description": "documento"
+        },
+        "mileage": {
+          "type": "integer",
+          "example": 35605,
+          "description": "quilometragem"
+        },
+        "doors": {
+          "type": "integer",
+          "example": 4,
+          "description": "numero de portas"
+        },
+        "year": {
+          "type": "integer",
+          "example": 2020,
+          "description": "ano do veiculo"
+        },
+        "color": {
+          "type": "integer",
+          "description": "consultar OPTIONS para ver o código de todas as cores"
+        },
+        "fipe": "A06BC44",
+        "model_year": {
+          "type": "integer",
+          "example": 2020,
+          "description": "o ano do modelo ao qual o veiculo pertence"
+        },
+        "gearbox": {
+          "type": "integer",
+          "description": "consultar OPTIONS para ver o código das possiveis embreagens"
+        },
+        "fuel": {
+          "type": "integer",
+          "description": "consultar OPTIONS para ver o código dos possiveis combustíveis"
+        },
+        "price": {
+          "type": "number",
+          "example": 49607.54,
+          "description": "valor total do veiculo"
+        },
+        "ammountOfInstallment": {
+          "type": "integer",
+          "example": 10,
+          "description": "numero de parcelas"
+        },
+        "ammountPerInstallment": {
+          "type": "number",
+          "example": 5000,
+          "description": "valor de cada parcela"
+        },
+        "description": {
+          "type": "string",
+          "example": "Veiculo em bom estado, precisa de reparos na porta direita traseira. Apenas um dono",
+          "description": "descrição do anúncio"
+        },
+        "featured": {
+          "type": "integer",
+          "description": "1 se for destaque, 0 se não"
+        },
+        "pictures": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Pictures"
+          }
+        },
+        "accessories": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "example": "10, 15, 18, 22",
+            "description": "consultar OPTIONS para ver o código dos possiveis acessórios"
+          }
+        },
+        "features": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "example": "1, 2, 7, 16, 22"
+          }
+        }
+      }
+    },
     "VehicleArray": {
       "type": "array",
       "items": {
         "$ref": "#/definitions/Vehicle"
+      }
+    },
+    "VehicleFipeArray": {
+      "type"; "array",
+      "items": {
+        "$ref": "#/definitions/VehicleFipe"
       }
     },
     "Pictures": {
