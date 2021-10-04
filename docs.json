@@ -34,7 +34,7 @@
     "http"
   ],
   "paths": {
-    "/": {
+    "/new": {
       "post": {
         "tags": [
           "vehicles"
