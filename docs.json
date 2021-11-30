@@ -1,728 +1,259 @@
 {
-  "swagger": "2.0",
-  "info": {
-    "description": "API para publicar veículos no portal Chaves na Mão\n",
-    "version": "0.1.1",
-    "title": "API Veículos Chaves na Mão",
-    "termsOfService": "http://swagger.io/terms/",
-    "contact": {
-      "email": "ti@chavesnamao.com.br"
+  "openapi":"3.0.0",
+  "paths":{
+    "/vehicles/new":{
+      "post":{
+        "operationId":"VehiclesController_create",
+        "parameters":[
+          
+        ],
+        "requestBody":{
+          "required":true,
+          "content":{
+            "application/json":{
+              "schema":{
+                "type":"array",
+                "items":{
+                  "type":"string"
+                }
+              }
+            }
+          }
+        },
+        "responses":{
+          "201":{
+            "description":""
+          }
+        },
+        "tags":[
+          "vehicles"
+        ]
+      }
+    },
+    "/vehicles/new/fipe":{
+      "post":{
+        "operationId":"VehiclesController_fipe",
+        "parameters":[
+          
+        ],
+        "responses":{
+          "201":{
+            "description":""
+          }
+        },
+        "tags":[
+          "vehicles"
+        ]
+      }
+    },
+    "/vehicles/all":{
+      "get":{
+        "operationId":"VehiclesController_findAll",
+        "parameters":[
+          
+        ],
+        "responses":{
+          "200":{
+            "description":""
+          }
+        },
+        "tags":[
+          "vehicles"
+        ]
+      }
+    },
+    "/vehicles/{reference}":{
+      "get":{
+        "operationId":"VehiclesController_findOne",
+        "parameters":[
+          {
+            "name":"reference",
+            "required":true,
+            "in":"path",
+            "schema":{
+              "type":"string"
+            }
+          }
+        ],
+        "responses":{
+          "200":{
+            "description":""
+          }
+        },
+        "tags":[
+          "vehicles"
+        ]
+      },
+      "patch":{
+        "operationId":"VehiclesController_update",
+        "parameters":[
+          {
+            "name":"reference",
+            "required":true,
+            "in":"path",
+            "schema":{
+              "type":"string"
+            }
+          }
+        ],
+        "requestBody":{
+          "required":true,
+          "content":{
+            "application/json":{
+              "schema":{
+                "$ref":"#/components/schemas/UpdateVehicleDto"
+              }
+            }
+          }
+        },
+        "responses":{
+          "200":{
+            "description":""
+          }
+        },
+        "tags":[
+          "vehicles"
+        ]
+      },
+      "delete":{
+        "operationId":"VehiclesController_remove",
+        "parameters":[
+          {
+            "name":"reference",
+            "required":true,
+            "in":"path",
+            "schema":{
+              "type":"string"
+            }
+          }
+        ],
+        "responses":{
+          "200":{
+            "description":""
+          }
+        },
+        "tags":[
+          "vehicles"
+        ]
+      }
+    },
+    "/vehicles/status":{
+      "patch":{
+        "operationId":"VehiclesController_changeActiveStatus",
+        "parameters":[
+          
+        ],
+        "requestBody":{
+          "required":true,
+          "content":{
+            "application/json":{
+              "schema":{
+                "$ref":"#/components/schemas/ActivateVehiclesDto"
+              }
+            }
+          }
+        },
+        "responses":{
+          "200":{
+            "description":""
+          }
+        },
+        "tags":[
+          "vehicles"
+        ]
+      }
+    },
+    "/vehicles/brand/{reference}":{
+      "get":{
+        "operationId":"VehiclesController_listBrands",
+        "parameters":[
+          {
+            "name":"reference",
+            "required":true,
+            "in":"path",
+            "schema":{
+              "type":"string"
+            }
+          }
+        ],
+        "responses":{
+          "200":{
+            "description":""
+          }
+        },
+        "tags":[
+          "vehicles"
+        ]
+      }
+    },
+    "/vehicles/model/{reference}":{
+      "get":{
+        "operationId":"VehiclesController_listVersions",
+        "parameters":[
+          {
+            "name":"reference",
+            "required":true,
+            "in":"path",
+            "schema":{
+              "type":"string"
+            }
+          }
+        ],
+        "responses":{
+          "200":{
+            "description":""
+          }
+        },
+        "tags":[
+          "vehicles"
+        ]
+      }
+    },
+    "/vehicles/token":{
+      "get":{
+        "operationId":"UsersController_authorizate",
+        "parameters":[
+          
+        ],
+        "responses":{
+          "200":{
+            "description":""
+          }
+        },
+        "tags":[
+          "auth"
+        ]
+      }
     }
   },
-  "host": "beta.chavesnamao.com.br",
-  "basePath": "/vehicles/",
-  "tags": [
-    {
-      "name": "vehicles",
-      "description": "criar, atualizar, ler e remover veiculos",
-      "externalDocs": {
-        "description": "Find out more",
-        "url": "http://swagger.io"
-      }
-    },
-    {
-      "name": "user",
-      "description": "entrar e autenticar",
-      "externalDocs": {
-        "description": "Find out more about our store",
-        "url": "http://swagger.io"
-      }
+  "info":{
+    "title":"API Veículos Chaves na Mão",
+    "description":"API para publicar veículos no portal Chaves na Mão (documentação ainda em construção)",
+    "version":"0.1.1",
+    "contact":{
+      
     }
+  },
+  "tags":[
+    
   ],
-  "schemes": [
-    "https",
-    "http"
+  "servers":[
+    
   ],
-  "paths": {
-    "/new": {
-      "post": {
-        "tags": [
-          "vehicles"
-        ],
-        "summary": "Adicionar veiculos",
-        "operationId": "addVehicles",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "Veiculos",
-            "description": "Vetor de veiculos",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/VehicleArray"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Criado com sucesso"
-          },
-          "400": {
-            "description": "Veiculo formatado incorretamente"
-          },
-          "403": {
-            "description": "Token expirado"
-          }
-        }
-      }
-    },
-    "/new/fipe": {
-      "post": {
-        "tags": [
-          "vehicles"
-        ],
-        "summary": "Adicionar veiculos",
-        "operationId": "addVehiclesFipe",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "Veiculos",
-            "description": "Vetor de veiculos",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/VehicleFipeArray"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Criado com sucesso"
-          },
-          "400": {
-            "description": "Veiculo formatado incorretamente"
-          },
-          "403": {
-            "description": "Token expirado"
-          }
-        }
-      }
-    },
-    "/all": {
-      "get": {
-        "tags": [
-          "vehicles"
-        ],
-        "summary": "Retorna todos os veiculos deste usuário",
-        "operationId": "findAllVehicles",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "items": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Sucesso",
-            "schema": {
-              "$ref": "#/definitions/VehicleArray"
-            }
-          },
-          "404": {
-            "description": "Veiculo nao encontrado"
-          }
-        }
-      }
-    },
-    "/:reference": {
-      "get": {
-        "tags": [
-          "vehicles"
-        ],
-        "summary": "Encontrar um veículo por referencia",
-        "operationId": "findOneVehicleByRef",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "reference",
-            "in": "query",
-            "description": "referencia do veiculo",
-            "required": true,
-            "type": "integer",
-            "items": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Sucesso",
-            "schema": {
-              "$ref": "#/definitions/Vehicle"
-            }
-          },
-          "404": {
-            "description": "Veiculo nao encontrado"
-          }
+  "components":{
+    "schemas":{
+      "UpdateVehicleDto":{
+        "type":"object",
+        "properties":{
+          
         }
       },
-      "delete": {
-        "tags": [
-          "vehicles"
-        ],
-        "summary": "Apaga um veículo por referencia",
-        "operationId": "deleteVehicleByRef",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "reference",
-            "in": "query",
-            "description": "referencia do veiculo",
-            "required": true,
-            "type": "integer",
-            "items": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Sucesso"
-          },
-          "404": {
-            "description": "Veiculo nao encontrado"
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "vehicles"
-        ],
-        "summary": "Corrige campos informados de um veiculo",
-        "operationId": "patchVehicle",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "Veiculo",
-            "description": "Vetor de veiculos",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Vehicle"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Atualizado com sucesso"
-          },
-          "400": {
-            "description": "Veiculo formatado incorretamente"
-          }
-        }
-      }
-    },
-    "/status/": {
-      "get": {
-        "tags": [
-          "vehicles"
-        ],
-        "summary": "Ativa ou desativa um ou mais veículo(s)",
-        "operationId": "updateStatus",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "reference",
-            "in": "query",
-            "description": "referencia do veiculo",
-            "required": true,
-            "type": "integer",
-            "items": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Sucesso",
-            "schema": {
-              "$ref": "#/definitions/UpdateStatus"
-            }
-          },
-          "403": {
-            "description": "Limite de anúncios ultrapassado"
-          }
-        }
-      }
-    },
-    "/token": {
-      "get": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Recebe um JWT para acessar outras rotas",
-        "operationId": "loginUser",
-        "produces": [
-          "application/json",
-          "application/xml"
-        ],
-        "parameters": [
-          {
-            "name": "token",
-            "in": "header",
-            "description": "The user name for login",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "token JWT contendo metadados da conta do usuário",
-            "schema": {
-              "type": "string",
-              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-            }
-          },
-          "400": {
-            "description": "Token inválido"
-          },
-          "401": {
-            "description": "Conta desativada"
-          }
-        }
-      }
-    },
-    "/brand/:reference": {
-      "options": {
-        "tags": [
-          "vehicles"
-        ],
-        "summary": "codigos das marcas",
-        "description": "lista as enumerações possíveis",
-        "operationId": "optionBrand",
-        "parameters": [
-          {
-            "name": "reference",
-            "in": "query",
-            "description": "Caso não informe uma marca, todas as marcas ativas e seus códigos serão listadas.",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Marca (ou vetor de marcas), com código e nome",
-            "schema": {
-              "$ref": "#/definitions/Brands"
-            }
-          }
-        }
-      }
-    },
-    "/model/:reference": {
-      "options": {
-        "tags": [
-          "vehicles"
-        ],
-        "summary": "codigos dos modelos",
-        "description": "lista as enumerações possíveis",
-        "operationId": "optionModel",
-        "parameters": [
-          {
-            "name": "reference",
-            "in": "query",
-            "description": "Caso não informe um modelo, todos as modelos ativos da marca, com suas versões e seus códigos, serão listados.",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Modelo (ou vetor de modelos), com código e nome",
-            "schema": {
-              "$ref": "#/definitions/Models"
-            }
-          }
+      "ActivateVehiclesDto":{
+        "type":"object",
+        "properties":{
+          
         }
       }
     }
-  },
-  "definitions": {
-    "UpdateStatus": {
-      "type": "object",
-      "properties": {
-        "activate": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "example": "1051, 5671, 178913, 1412, AB56G12"
-          }
-        },
-        "deactivate": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "example": "6511, 1327, TB66UK58, 177901, 81328"
-          }
-        }
-      }
-    },
-    "Brands": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "example": 10
-        },
-        "name": {
-          "type": "string",
-          "example": "Toyota"
-        },
-        "models": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Models"
-          }
-        }
-      }
-    },
-    "Models": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "example": 44
-        },
-        "name": {
-          "type": "string",
-          "example": "Corolla"
-        },
-        "versions": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Versions"
-          }
-        }
-      }
-    },
-    "Versions": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "example": 58
-        },
-        "name": {
-          "type": "string",
-          "example": "XEI"
-        }
-      }
-    },
-    "Vehicle": {
-      "type": "object",
-      "properties": {
-        "reference": {
-          "type": "string",
-          "example": "122356",
-          "description": "referencia única do veiculo do lado do usuario"
-        },
-        "type": {
-          "type": "string",
-          "example": "C",
-          "description": "C para Carro, M para moto."
-        },
-        "licensePlate": {
-          "type": "string",
-          "example": "AA1A11",
-          "description": "placa"
-        },
-        "document": {
-          "type": "integer",
-          "example": 1728,
-          "description": "documento"
-        },
-        "mileage": {
-          "type": "integer",
-          "example": 35605,
-          "description": "quilometragem"
-        },
-        "doors": {
-          "type": "integer",
-          "example": 4,
-          "description": "numero de portas"
-        },
-        "year": {
-          "type": "integer",
-          "example": 2020,
-          "description": "ano do veiculo"
-        },
-        "color": {
-          "type": "integer",
-          "description": "consultar OPTIONS para ver o código de todas as cores"
-        },
-        "version": {
-          "type": "integer",
-          "description": "consultar OPTIONS para ver o código de todas as versoes"
-        },
-        "model": {
-          "type": "integer",
-          "description": "consultar OPTIONS para ver o código de todos os modelos"
-        },
-        "brand": {
-          "type": "integer",
-          "description": "consultar OPTIONS para ver o código de todos as marcas"
-        },
-        "model_year": {
-          "type": "integer",
-          "example": 2020,
-          "description": "o ano do modelo ao qual o veiculo pertence"
-        },
-        "gearbox": {
-          "type": "integer",
-          "description": "consultar OPTIONS para ver o código das possiveis embreagens"
-        },
-        "fuel": {
-          "type": "integer",
-          "description": "consultar OPTIONS para ver o código dos possiveis combustíveis"
-        },
-        "price": {
-          "type": "number",
-          "example": 49607.54,
-          "description": "valor total do veiculo"
-        },
-        "ammountOfInstallment": {
-          "type": "integer",
-          "example": 10,
-          "description": "numero de parcelas"
-        },
-        "ammountPerInstallment": {
-          "type": "number",
-          "example": 5000,
-          "description": "valor de cada parcela"
-        },
-        "description": {
-          "type": "string",
-          "example": "Veiculo em bom estado, precisa de reparos na porta direita traseira. Apenas um dono",
-          "description": "descrição do anúncio"
-        },
-        "featured": {
-          "type": "integer",
-          "description": "1 se for destaque, 0 se não"
-        },
-        "pictures": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Pictures"
-          }
-        },
-        "accessories": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "example": "10, 15, 18, 22",
-            "description": "consultar OPTIONS para ver o código dos possiveis acessórios"
-          }
-        },
-        "features": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "example": "1, 2, 7, 16, 22"
-          }
-        }
-      }
-    },
-    "VehicleFipe": {
-      "type": "object",
-      "properties": {
-        "reference": {
-          "type": "string",
-          "example": "122356",
-          "description": "referencia única do veiculo do lado do usuario"
-        },
-        "type": {
-          "type": "string",
-          "example": "C",
-          "description": "C para Carro, M para moto."
-        },
-        "licensePlate": {
-          "type": "string",
-          "example": "AA1A11",
-          "description": "placa"
-        },
-        "document": {
-          "type": "integer",
-          "example": 1728,
-          "description": "documento"
-        },
-        "mileage": {
-          "type": "integer",
-          "example": 35605,
-          "description": "quilometragem"
-        },
-        "doors": {
-          "type": "integer",
-          "example": 4,
-          "description": "numero de portas"
-        },
-        "year": {
-          "type": "integer",
-          "example": 2020,
-          "description": "ano do veiculo"
-        },
-        "color": {
-          "type": "integer",
-          "description": "consultar OPTIONS para ver o código de todas as cores"
-        },
-        "fipe": {
-          "type": "string",
-          "example": "A06BC8",
-          "description": "codigo da tabela FIPE"
-        },
-        "model_year": {
-          "type": "integer",
-          "example": 2020,
-          "description": "o ano do modelo ao qual o veiculo pertence"
-        },
-        "gearbox": {
-          "type": "integer",
-          "description": "consultar OPTIONS para ver o código das possiveis embreagens"
-        },
-        "fuel": {
-          "type": "integer",
-          "description": "consultar OPTIONS para ver o código dos possiveis combustíveis"
-        },
-        "price": {
-          "type": "number",
-          "example": 49607.54,
-          "description": "valor total do veiculo"
-        },
-        "ammountOfInstallment": {
-          "type": "integer",
-          "example": 10,
-          "description": "numero de parcelas"
-        },
-        "ammountPerInstallment": {
-          "type": "number",
-          "example": 5000,
-          "description": "valor de cada parcela"
-        },
-        "description": {
-          "type": "string",
-          "example": "Veiculo em bom estado, precisa de reparos na porta direita traseira. Apenas um dono",
-          "description": "descrição do anúncio"
-        },
-        "featured": {
-          "type": "integer",
-          "description": "1 se for destaque, 0 se não"
-        },
-        "pictures": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Pictures"
-          }
-        },
-        "accessories": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "example": "10, 15, 18, 22",
-            "description": "consultar OPTIONS para ver o código dos possiveis acessórios"
-          }
-        },
-        "features": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "example": "1, 2, 7, 16, 22"
-          }
-        }
-      }
-    },
-    "VehicleArray": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/Vehicle"
-      }
-    },
-    "VehicleFipeArray": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/VehicleFipe"
-      }
-    },
-    "Pictures": {
-      "type": "object",
-      "properties": {
-        "photo": {
-          "type": "string",
-          "example": "https://url.onde.imagem/esta/hospedada.jpg",
-          "description": "url onde o servidor irá buscar a imagem para ser salva"
-        },
-        "order": {
-          "type": "integer",
-          "description": "ordem de aparecimento das imagens, sendo a menor a imagem de thumbnail"
-        }
-      }
-    }
-  },
-  "externalDocs": {
-    "description": "Find out more about Swagger",
-    "url": "http://swagger.io"
   }
 }
